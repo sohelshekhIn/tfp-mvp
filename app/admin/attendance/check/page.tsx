@@ -1,9 +1,10 @@
+export const dynamic = "force-dynamic";
+
 import { getLocalTimeString } from "@/lib/utils";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MemberAttendanceTableBody } from "@/components/Admin/MbrAttnCheckRow";
-export const dynamic = "force-dynamic";
 const CheckMemberAttendancePage = async () => {
   const supabase = createServerComponentClient({ cookies });
   const {
