@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-
+export const dynamic = "force-dynamic";
 const ShowAllAttendancePage = async () => {
   const supabase = createServerComponentClient({ cookies });
 

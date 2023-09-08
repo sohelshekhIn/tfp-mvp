@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cookies } from "next/headers";
-
+export const dynamic = "force-dynamic";
 function daysToYearsMonthsAndDays(days: number) {
   const daysInYear = 365;
   const daysInMonth = 30; // Assuming an average of 30 days per month

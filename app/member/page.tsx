@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import MarkAttnBtn from "@/components/Member/MarkAttnBtn";
 import { getLocalTimeString } from "@/lib/utils";
-
+export const dynamic = "force-dynamic";
 const MemberIndex = async () => {
   const supabase = createServerComponentClient({ cookies });
   const {
