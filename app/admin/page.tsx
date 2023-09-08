@@ -31,7 +31,7 @@ export default async function Home() {
             href="/admin/attendance/all"
             className="px-4 py-8 bg-indigo-500/70 shadow-inner text-white rounded-md text-center"
           >
-            All Attendance's
+            All Attendance&apos;s
           </Link>
           <Link
             href="/admin/register-admin"

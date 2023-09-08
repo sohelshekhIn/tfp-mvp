@@ -27,7 +27,7 @@ const ShowAllAttendancePage = async () => {
     <div className="p-5">
       <div className="py-2">
         <h1 className="text-gray-700 font-semibold text-lg">
-          Today's Attendance
+          Today&apos;s Attendance
         </h1>
         <p className="text-xs font-medium">{new Date().toDateString()}</p>
       </div>
@@ -55,7 +55,7 @@ const ShowAllAttendancePage = async () => {
                 return;
               }
               return (
-                <TableRow>
+                <TableRow key={memberData[0].user_id}>
                   <Link href={`/admin/attendance/check`}>
                     <TableCell className="">{memberData[0].name}</TableCell>
                   </Link>

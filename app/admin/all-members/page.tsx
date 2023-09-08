@@ -78,7 +78,7 @@ const TableDataRows = ({ membersData }: { membersData: any }) => {
           (1000 * 3600 * 24)
       );
       return (
-        <TableRow>
+        <TableRow key={item.expiry_date_time}>
           <TableCell>{item.name}</TableCell>
           <TableCell>{expiryDate}</TableCell>
           <TableCell>

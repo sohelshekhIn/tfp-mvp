@@ -23,7 +23,7 @@ export const MemberAttendanceTableBody = ({
   return (
     <TableBody>
       {attnData.map((item) => {
-        return <MemberAttendanceCheckRow attnItem={item} />;
+        return <MemberAttendanceCheckRow key={item.attn_id} attnItem={item} />;
       })}
     </TableBody>
   );
