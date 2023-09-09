@@ -26,8 +26,8 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/admin", req.url));
       }
     }
+    return res;
   }
-  return res;
 }
 
 export const config = {
