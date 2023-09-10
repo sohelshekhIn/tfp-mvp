@@ -23,7 +23,13 @@ export const MemberAttendanceTableBody = ({
   return (
     <TableBody>
       {attnData.map((item) => {
-        return <MemberAttendanceCheckRow key={item.attn_id} attnItem={item} />;
+        return (
+          <MemberAttendanceCheckRow
+            key={item.attn_id}
+            attnData={attnData}
+            attnItem={item}
+          />
+        );
       })}
     </TableBody>
   );
@@ -31,17 +37,20 @@ export const MemberAttendanceTableBody = ({
 
 const MemberAttendanceCheckRow = ({
   attnItem,
+  attnData,
 }: {
   attnItem: {
     user_id: number;
     attn_id: number;
   };
+  attnData: any[];
 }) => {
   const supabase = createClientComponentClient();
   const router = useRouter();
   const [memberData, setMemberData] = useState({
     name: "",
   });
+  const [updating, setUpdating] = useState(false); // State to track whether an update is in progress
 
   const fetchMemberData = async () => {
     const { data, error } = await supabase
@@ -75,12 +84,59 @@ const MemberAttendanceCheckRow = ({
       .subscribe();
   }, []);
 
+  const handleAttendanceUpdate = async (action: "present" | "absent") => {
+    if (updating) return; // Avoid multiple simultaneous updates
+    setUpdating(true);
+    try {
+      if (action === "present") {
+        // Optimistically update the UI
+        alterAttendanceLocally(attnItem.attn_id, "present");
+        // Update attendance table on the server
+        const { data, error } = await supabase
+          .from("attendance")
+          .update({ status: "TRUE" })
+          .eq("attn_id", attnItem.attn_id);
+        if (error) {
+          console.log(error);
+          // Rollback the UI update in case of an error
+          alterAttendanceLocally(attnItem.attn_id, "absent");
+        }
+      } else {
+        // Optimistically update the UI
+        alterAttendanceLocally(attnItem.attn_id, "absent");
+        // Update attendance table on the server
+        const { data, error } = await supabase
+          .from("attendance")
+          .delete()
+          .eq("attn_id", attnItem.attn_id);
+        if (error) {
+          console.log(error);
+          // Rollback the UI update in case of an error
+          alterAttendanceLocally(attnItem.attn_id, "present");
+        }
+      }
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const alterAttendanceLocally = (id: number, action: "present" | "absent") => {
+    // Update the UI optimistically by filtering the attnData array
+    const updatedData = attnData.filter((item: any) => item.attn_id !== id);
+    setMemberData((prevData) => {
+      return {
+        ...prevData,
+        name: updatedData,
+      };
+    });
+  };
+
   return (
     <TableRow>
       <TableCell>{memberData.name}</TableCell>
       <TableCell>
         <Button
-          onClick={() => alterAttendance(attnItem.attn_id, "present", supabase)}
+          onClick={() => handleAttendanceUpdate("present")}
           className="p-1 bg-green-400 text-white rounded-md"
         >
           {/* Approve */}
@@ -98,7 +154,7 @@ const MemberAttendanceCheckRow = ({
       </TableCell>
       <TableCell>
         <Button
-          onClick={() => alterAttendance(attnItem.attn_id, "absent", supabase)}
+          onClick={() => handleAttendanceUpdate("absent")}
           className="px-2 py-1 bg-red-400 text-white rounded-md"
         >
           {/* Cancel */}
@@ -137,30 +193,30 @@ const MemberAttendanceCheckRow = ({
   );
 };
 
-const alterAttendance = async (
-  id: number,
-  action: "present" | "absent",
-  supabase: any
-) => {
-  if (action === "present") {
-    // update attendance table
-    const { data, error } = await supabase
-      .from("attendance")
-      .update({ status: "TRUE" })
-      .eq("attn_id", id);
-    if (error) {
-      console.log(error);
-      return;
-    }
-  } else {
-    // update attendance table
-    const { data, error } = await supabase
-      .from("attendance")
-      .delete()
-      .eq("attn_id", id);
-    if (error) {
-      console.log(error);
-      return;
-    }
-  }
-};
+// const alterAttendance = async (
+//   id: number,
+//   action: "present" | "absent",
+//   supabase: any
+// ) => {
+//   if (action === "present") {
+//     // update attendance table
+//     const { data, error } = await supabase
+//       .from("attendance")
+//       .update({ status: "TRUE" })
+//       .eq("attn_id", id);
+//     if (error) {
+//       console.log(error);
+//       return;
+//     }
+//   } else {
+//     // update attendance table
+//     const { data, error } = await supabase
+//       .from("attendance")
+//       .delete()
+//       .eq("attn_id", id);
+//     if (error) {
+//       console.log(error);
+//       return;
+//     }
+//   }
+// };

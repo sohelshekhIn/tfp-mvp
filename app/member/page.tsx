@@ -18,7 +18,6 @@ const MemberIndex = async () => {
     console.log(error);
     return;
   }
-
   return (
     <div className="py-3">
       <h1 className="text-gray-700 font-semibold text-lg">
@@ -26,6 +25,17 @@ const MemberIndex = async () => {
       </h1>
       <div className="py-4">
         <MarkAttnBtn data={data} />
+        <div className="py-2">
+          {data.length > 0 && data[0].status === true ? (
+            <p className="text-sm font-medium text-green-500">
+              Attendance marked
+            </p>
+          ) : (
+            <p className="text-sm font-medium text-red-500">
+              Attendance not marked
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

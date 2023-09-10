@@ -5,10 +5,6 @@ import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MemberAttendanceTableBody } from "@/components/Admin/MbrAttnCheckRow";
 const CheckMemberAttendancePage = async () => {
   const supabase = createServerComponentClient({ cookies });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   const { data, error } = await supabase
     .from("attendance")
     .select("*")
