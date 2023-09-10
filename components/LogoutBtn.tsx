@@ -13,7 +13,7 @@ const LogoutBtn = () => {
       type="button"
       onClick={() => {
         supabase.auth.signOut();
-        router.push("/login");
+        router.refresh();
       }}
     >
       Logout

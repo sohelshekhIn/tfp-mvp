@@ -73,7 +73,7 @@ const MemberAttendanceCheckRow = ({
         }
       )
       .subscribe();
-  });
+  }, []);
 
   return (
     <TableRow>

@@ -65,7 +65,7 @@ export default function AuthForm() {
     toast({
       title: "Login Successful",
     });
-    router.push("/");
+    router.refresh();
   };
 
   return (

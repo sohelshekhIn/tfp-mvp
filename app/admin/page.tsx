@@ -44,6 +44,12 @@ export default async function Home() {
           >
             All Members
           </Link>
+          <Link
+            href="/admin/all-admins"
+            className="px-4 py-8 bg-indigo-500/70 shadow-inner text-white rounded-md text-center"
+          >
+            All Admins
+          </Link>
         </div>
       </div>
     </div>
